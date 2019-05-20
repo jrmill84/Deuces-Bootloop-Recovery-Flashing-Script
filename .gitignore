@@ -1,3 +1,5 @@
 *.zip
 *.exe
+*.log
+test.ps1
 /_work
