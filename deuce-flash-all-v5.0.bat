@@ -1,6 +1,5 @@
 @ECHO OFF
 cls
 cd /d %~dp0
-echo Deuces-flash-all-script-v5.0-Windows
-powershell.exe -ExecutionPolicy Bypass -File deuce-flash-all-v5.0-worker.ps1
+powershell.exe -ExecutionPolicy Bypass -WindowStyle Maximized -File deuce-flash-all-v5.0.ps1
 
