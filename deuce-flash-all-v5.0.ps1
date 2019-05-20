@@ -112,5 +112,8 @@ elseif ($zipname.Count -eq 1)
 Write-Host -nonewline -BackgroundColor Yellow -ForegroundColor Black "Format UserData? (y/N) "
 $resp2 = read-host
 if ( $resp2 -ne "Y" ) { Write-Host "Done!"; pause; exit }
-if ( $resp2 -eq "Y" ) { Write-Host -nonewline -BackgroundColor Yellow -ForegroundColor Black "Are you Sure?! (y/N) "; $resp3 = read-host; if ($resp3 -eq "Y") { Invoke-Expression "$fb format userdata" 2>$null; Invoke-Expression "$fb reboot-recovery 2>$null"; Write-Host "Done!"; pause } }
+if ( $resp2 -eq "Y" ) { Write-Host -nonewline -BackgroundColor Yellow -ForegroundColor Black "Are you Sure?! (y/N) "; $resp3 = read-host; if ($resp3 -eq "Y") { Invoke-Expression "$fb format userdata" 2>$null; Invoke-Expression "$fb reboot-recovery 2>$null"; Write-Host "Done!"; pause; exit } }
             
+Write-Host "Done!"
+Pause
+exit
