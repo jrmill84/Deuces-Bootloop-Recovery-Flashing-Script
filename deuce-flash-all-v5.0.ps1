@@ -1,7 +1,8 @@
 Start-Transcript deuces-script-$(get-date -f yyyy-MM-dd--hhmm).log | out-null
+Clear-Host
 Write-Host "Welcome to Deuces Flashing Script!"
 Write-Host "v5.0-Windows"
-Write-Host "Checking if ADB/Fastboot exes are in PATH or script directory"
+Write-Host "Checking if Fastboot exe is accessible.."
 
 
 if (Get-ChildItem fastboot.exe 2>$null) {
@@ -9,37 +10,19 @@ if (Get-ChildItem fastboot.exe 2>$null) {
   } else {
     $fb = "fastboot.exe"
   }
-if (Get-ChildItem adb.exe 2>$null) {
-    $adb = ".\adb.exe"
-  } else {
-    $adb = "adb.exe"
-  }
 
 
-Write-Host "Checking if ADB/Fastboot work correctly"
-$error.clear()
-try { (Invoke-Expression "$adb --version") }
-catch { Write-Host -ForegroundColor Red "Error! ADB not accessible!"; pause; exit 1 }
-if (!$error) {
-Write-Host -ForegroundColor Green "ADB Detected!"
-}
+
+
+
+
+Write-Host "Checking if Fastboot works correctly"
 $error.clear()
 try { (Invoke-Expression "$fb --version") }
 catch { Write-Host -ForegroundColor Red "Error! Fastboot not accessible!"; pause; exit 1 }
 if (!$error) {
 Write-Host -ForegroundColor Green "Fastboot Detected!"
 }
-
-
-Write-Host "Checking if device is attached via ADB."
-$adbdv = (Invoke-Expression "$adb devices -l")
-if ( $adbdv -Like '*transport_id*') { Write-Host "ADB device attached!" }
-else { Write-Host -ForegroundColor Red "Error: Device not detected via ADB."; Write-Host "If device is already in Bootloader mode, continue."; Write-Host -ForegroundColor Yellow "If not, check device cables / drivers and continue to checking device trust..."; Pause }
-
-
-Write-Host "Checking if computer is trusted by device via ADB."
-if ( $adbdv -like '*unauthorized*') { Write-Host -ForegroundColor Red "Device Detected, but does not trust computer. Verify you have allowed ADB on the device."; Pause; Exit 1 }
-elseif ( $adbdv -like '*device product*') { Write-Host -ForegroundColor Green "Device Trusts PC and is ready to continue..."; Write-Host "Rebooting to bootloader..."; (Invoke-Expression "$adb reboot-bootloader"); Start-Sleep 7 }
 
 
 
@@ -49,16 +32,19 @@ if ($fbdv -like '*fastboot*') { Write-Host -ForegroundColor Green "Device Detect
 else {Write-Host -ForegroundColor Red "Error: Device not detected via Fastboot."; Write-Host -ForegroundColor Red "Check device cables and fastboot drivers..."; pause; Exit 1 }
 
 
+
+
+
 $zipname = (Get-ChildItem *.zip).fullname
 if ($zipname.Count -gt 1 )
-    { Write-Host "Error: More than 1 zip file."; Write-Host "Place only 1 zip file with the script folder..."; Pause; exit 1 }
+    { Write-Host "Error: More than 1 zip file."; Write-Host "Place only 1 zip file in the script folder..."; Pause; exit 1 }
 elseif ($zipname.Count -eq 0)
     { Write-Host "Error: No zip files detected."; Write-Host "Place zip file with script folder..."; Pause; exit 1 }
 elseif ($zipname.Count -eq 1)
     { 
             Write-Host -ForegroundColor Black -BackgroundColor White "Are you SURE you want to continue?"
             Pause
-            Write-Host -ForegroundColor Yellow -BackgroundColor Black "This tool will reformat most partitions in your device!"
+            Write-Host -ForegroundColor Yellow -BackgroundColor Black "This tool will reformat partitions in your device!"
             Write-Host -ForegroundColor Yellow -BackgroundColor Black "It will attempt to keep your user data!"
             Write-Host -ForegroundColor Black -BackgroundColor Yellow "Data could be lost! - Use At Your Own Risk!"
             Write-Host -nonewline "Continue? (y/N) "
