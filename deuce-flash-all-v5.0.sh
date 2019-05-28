@@ -143,6 +143,7 @@ if echo "$answer3" | grep -iq "^y" ;then
                 echo "Formatting user data.."
                 $fb format userdata 2>/dev/null
                 $fb reboot-recovery 2>/dev/null
+                echo "\033[32mDone!\033[0m"
         else
             echo "\033[36mSkipped formatting userdata.\033[0m"
             echo "\033[32mDone!\033[0m"
