@@ -1,6 +1,8 @@
 #!/bin/sh
 echo "Welcome to Deuces Flashing Script!"
 echo "v5.0-Linux"
+#to create a log, run: "script -c ./deuce-flash-all-v5.0.sh logfile.log"
+
 echo "Checking if Fastboot binary is accessible.."
 
 
